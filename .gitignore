@@ -2,3 +2,8 @@ node_modules
 .idea
 *.ps1
 *.bundle.js
+/npm-debug.log
+/.jshintignore
+/.jshintrc
+/.vscode/settings.json
+/examples/commonjs-browserify/npm-debug.log
