@@ -675,7 +675,7 @@ var MixpanelLib = function() {};
  */
 var MixpanelPeople = function() {};
 
-var MPNotif;
+// var MPNotif;
 
 /**
  * create_mplib(token:string, config:object, name:string)
@@ -1339,7 +1339,7 @@ MixpanelLib.prototype.identify = function(unique_id, _set_callback, _add_callbac
         this.unregister(ALIAS_ID_KEY);
         this._register_single('distinct_id', unique_id);
     }
-    this._check_and_handle_notifications(this.get_distinct_id());
+    // this._check_and_handle_notifications(this.get_distinct_id());
     this._flags.identify_called = true;
     // Flush any queued up people requests
     this['people']._flush(_set_callback, _add_callback, _append_callback, _set_once_callback, _union_callback);
@@ -1548,7 +1548,7 @@ MixpanelLib.prototype._event_is_disabled = function(event_name) {
         this._flags.disable_all_events ||
         _.include(this.__disabled_events, event_name);
 };
-
+/*
 MixpanelLib.prototype._check_and_handle_notifications = function(distinct_id) {
     if (!distinct_id || this._flags.identify_called || this.get_config('disable_notifications')) {
         return;
@@ -1579,7 +1579,7 @@ MixpanelLib.prototype._show_notification = function(notification_data) {
     var notification = new MPNotif(notification_data, this);
     notification.show();
 };
-
+*/
 MixpanelPeople.prototype._init = function(mixpanel_instance) {
     this._mixpanel = mixpanel_instance;
 };
@@ -2022,7 +2022,7 @@ MixpanelPeople.prototype._is_reserved_property = function(prop) {
     return prop === '$distinct_id' || prop === '$token';
 };
 
-
+/*
 // Internal class for notification display
 MixpanelLib._Notification = function(notif_data, mixpanel_instance) {
     _.bind_instance_methods(this);
@@ -2063,9 +2063,10 @@ MixpanelLib._Notification = function(notif_data, mixpanel_instance) {
     this.imgs_to_preload = this._init_image_html();
     this._init_video();
 };
+*/
 
-MPNotif = MixpanelLib._Notification;
-
+// MPNotif = MixpanelLib._Notification;
+/*
 MPNotif.ANIM_TIME         = 200;
 MPNotif.MARKUP_PREFIX     = 'mixpanel-notification';
 MPNotif.BG_OPACITY        = 0.6;
@@ -3290,7 +3291,7 @@ MPNotif.prototype._yt_video_ready = _.safewrap(function() {
         }
     });
 });
-
+*/
 // EXPORTS (for closure compiler)
 
 // MixpanelLib Exports
@@ -3313,8 +3314,8 @@ MixpanelLib.prototype['get_config']                      = MixpanelLib.prototype
 MixpanelLib.prototype['get_property']                    = MixpanelLib.prototype.get_property;
 MixpanelLib.prototype['get_distinct_id']                 = MixpanelLib.prototype.get_distinct_id;
 MixpanelLib.prototype['toString']                        = MixpanelLib.prototype.toString;
-MixpanelLib.prototype['_check_and_handle_notifications'] = MixpanelLib.prototype._check_and_handle_notifications;
-MixpanelLib.prototype['_show_notification']              = MixpanelLib.prototype._show_notification;
+// MixpanelLib.prototype['_check_and_handle_notifications'] = MixpanelLib.prototype._check_and_handle_notifications;
+// MixpanelLib.prototype['_show_notification']              = MixpanelLib.prototype._show_notification;
 
 // MixpanelPersistence Exports
 MixpanelPersistence.prototype['properties']            = MixpanelPersistence.prototype.properties;
@@ -3334,7 +3335,8 @@ MixpanelPeople.prototype['clear_charges'] = MixpanelPeople.prototype.clear_charg
 MixpanelPeople.prototype['delete_user']   = MixpanelPeople.prototype.delete_user;
 MixpanelPeople.prototype['toString']      = MixpanelPeople.prototype.toString;
 
-_.safewrap_class(MixpanelLib, ['identify', '_check_and_handle_notifications', '_show_notification']);
+// _.safewrap_class(MixpanelLib, ['identify', '_check_and_handle_notifications', '_show_notification']);
+_.safewrap_class(MixpanelLib, ['identify']);
 
 var instances = {};
 var extend_mp = function() {
