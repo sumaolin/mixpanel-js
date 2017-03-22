@@ -275,7 +275,7 @@ var autotrack = {
             return e.target;
         }
     },
-
+    // 获取dom 节点的渲染路径等信息
     _trackEvent: function(e, instance) {
         /*** Don't mess with this code without running IE8 tests on it ***/
         var target = this._getEventTarget(e);
@@ -372,7 +372,8 @@ var autotrack = {
         }
         this._initializedTokens.push(token);
 
-        if (!this._maybeLoadEditor(instance)) { // don't autotrack actions when the editor is enabled
+        //if (!this._maybeLoadEditor(instance)) { // don't autotrack actions when the editor is enabled
+        if (true) {
             var parseDecideResponse = _.bind(function(response) {
                 if (response && response['config'] && response['config']['enable_collect_everything'] === true) {
 
@@ -402,7 +403,8 @@ var autotrack = {
             );
         }
     },
-
+    /*
+    // Dom选择器相关的参数解析
     _editorParamsFromHash: function(instance, hash) {
         var editorParams;
         try {
@@ -434,6 +436,7 @@ var autotrack = {
         }
         return editorParams;
     },
+    */
 
     /**
      * To load the visual editor, we need an access token and other state. That state comes from one of three places:
@@ -441,6 +444,8 @@ var autotrack = {
      * 2. From session storage under the key `_mpcehash` if the snippet already parsed the hash
      * 3. From session storage under the key `editorParams` if the editor was initialized on a previous page
      */
+    // 是否加载 dom选择器
+    /*
     _maybeLoadEditor: function(instance) {
         var parseFromUrl = false;
         if (_.getHashParam(window.location.hash, 'state')) {
@@ -469,6 +474,7 @@ var autotrack = {
     },
 
     // only load the codeless event editor once, even if there are multiple instances of MixpanelLib
+    // 加载 dom选择器
     _editorLoaded: false,
     _loadEditor: function(instance, editorParams) {
         if (!this._editorLoaded) {
@@ -488,6 +494,7 @@ var autotrack = {
         }
         return false;
     },
+    */
 
     // this is a mechanism to ramp up CE with no server-side interaction.
     // when CE is active, every page load results in a decide request. we
