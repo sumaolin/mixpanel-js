@@ -371,9 +371,8 @@ var autotrack = {
             return;
         }
         this._initializedTokens.push(token);
-
-        //if (!this._maybeLoadEditor(instance)) { // don't autotrack actions when the editor is enabled
-        if (true) {
+        /*
+        if (!this._maybeLoadEditor(instance)) { // don't autotrack actions when the editor is enabled
             var parseDecideResponse = _.bind(function(response) {
                 if (response && response['config'] && response['config']['enable_collect_everything'] === true) {
 
@@ -391,7 +390,7 @@ var autotrack = {
                     instance['__autotrack_enabled'] = false;
                 }
             }, this);
-
+            
             instance._send_request(
                 instance.get_config('decide_host') + '/decide/', {
                     'verbose': true,
@@ -401,7 +400,16 @@ var autotrack = {
                 },
                 instance._prepare_callback(parseDecideResponse)
             );
+            
         }
+        */
+
+        // 直接开启 autoTrack 不通过发送dicede 请求觉得
+        instance.track('$web_event', _.extend({
+            '$title': document.title
+        }, this._getDefaultProperties('pageview')));
+
+        this._addDomEventHandlers(instance);
     },
     /*
     // Dom选择器相关的参数解析

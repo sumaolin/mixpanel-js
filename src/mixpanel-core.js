@@ -84,8 +84,8 @@ var ENQUEUE_REQUESTS = !USE_XHR && (userAgent.indexOf('MSIE') === -1) && (userAg
  * Module-level globals
  */
 var DEFAULT_CONFIG = {
-    'api_host':               HTTP_PROTOCOL + 'api.mixpanel.com',
-    'app_host':               HTTP_PROTOCOL + 'mixpanel.com',
+    'api_host':               HTTP_PROTOCOL + 'api.km.com',
+    'app_host':               HTTP_PROTOCOL + 'km.com',
     'autotrack':              true,
     'cdn':                    HTTP_PROTOCOL + 'cdn.mxpnl.com',
     'cross_subdomain_cookie': true,
@@ -760,6 +760,7 @@ var create_mplib = function(token, config, name) {
  * @param {String} [name]    The name for the new mixpanel instance that you want created
  */
 MixpanelLib.prototype.init = function (token, config, name) {
+    console.error('sumaolin ');
     if (_.isUndefined(name)) {
         console.error('You must name your new library: init(token, config, name)');
         return;
