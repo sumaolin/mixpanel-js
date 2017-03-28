@@ -13,7 +13,8 @@
     "test": "BABEL_ENV=test ./node_modules/mocha/bin/mocha --compilers js:babel-core/register tests/unit/*.js",
     "integration_test": "echo 'Browse to localhost:3000/tests' && node testServer.js",
     "lint": "./node_modules/eslint/bin/eslint.js ./src",
-    "validate": "npm ls"
+    "validate": "npm ls",
+    "sbuild": "java -jar vendor/closure-compiler/compiler.jar --js mixpanel-jslib-snippet.js --js_output_file mixpanel-jslib-snippet.min.js --compilation_level ADVANCED_OPTIMIZATIONS"
   },
   "repository": {
     "type": "git",
