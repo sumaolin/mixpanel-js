@@ -345,7 +345,7 @@ var autotrack = {
     _navigate: function(href) {
         window.location.href = href;
     },
-
+    // 添加document 的 事件绑定
     _addDomEventHandlers: function(instance) {
         var handler = _.bind(function(e) {
             e = e || window.event;
@@ -357,6 +357,8 @@ var autotrack = {
     },
 
     _customProperties: {},
+
+    // 初始化
     init: function(instance) {
         if (!(document && document.body)) {
             console.log('document not ready yet, trying again in 500 milliseconds...');
