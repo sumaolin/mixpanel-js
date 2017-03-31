@@ -35,16 +35,18 @@ app.get('/track', function(req, res, next){
     var objData = JSON.parse(strJsonData);
 
     var newLog = new Log({
-      eventType: objData.event,
-      commonInfo: objData.properties.$os,
-      specialInfo: objData.properties.$event_type ? objData.properties.$event_type : 'init'
+      eType: objData.event,
+      domEType: objData.properties.$event_type ? objData.properties.$event_type : 'null',
+      commonInfo: strJsonData,
+      specialInfo: objData.properties.$elements ? JSON.stringify(objData.properties.$elements) : 'null',
+      domText: objData.properties.$el_text ? JSON.stringify(objData.properties.$el_text) : 'null'
     });
-    console.log(objData.properties.$event_type);
+    // console.log(new Buffer(objData.properties.$elements).toString('utf8'));
     newLog.save(function(err, res){
       if(err){
         console.log('Err: ' + err);
       }else{
-        console.log('Res: ' + res);
+        // console.log('Res: ' + res);
       }
     })
   }
