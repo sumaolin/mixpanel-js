@@ -106,7 +106,8 @@ var autotrack = {
             case 'textarea':
                 return event.type === 'change';
             default:
-                return event.type === 'click';
+                // return event.type === 'click';
+                return event.type === 'click' || event.type === 'touchend';
         }
     },
 
@@ -321,13 +322,14 @@ var autotrack = {
             if (explicitNoTrack) {
                 return false;
             }
-
+            var domPath = this._getDomPath(elementsJson);
             var props = _.extend(
                 this._getDefaultProperties(e.type),
                 {
                     '$elements':  elementsJson,
                     '$el_attr__href': href,
-                    '$el_text': elementText
+                    '$el_text': elementText,
+                    '$dom_path': domPath
                 },
                 this._getCustomProperties(targetElementList)
             );
@@ -340,6 +342,21 @@ var autotrack = {
         }
     },
 
+    // _trackEvent 中调用获取当前的路径
+    _getDomPath: function(elementsJson) {
+        // console.log(elementsJson);
+        var arrDom = []
+        _.each(elementsJson, function(ej) {
+            // console.log(ej['tag_name']);
+            var firstClass = ej['classes'].length > 0 ? ej['classes'][0] : '';
+            var curElement = ej['tag_name'] + '.' + firstClass;
+            arrDom.push(curElement)
+        });
+        arrDom.reverse();
+        console.log(arrDom.join(' '));
+        return arrDom.join(' ');
+    },
+
     // only reason is to stub for unit tests
     // since you can't override window.location props
     _navigate: function(href) {
@@ -348,12 +365,14 @@ var autotrack = {
     // 添加document 的 事件绑定
     _addDomEventHandlers: function(instance) {
         var handler = _.bind(function(e) {
+            console.log(e.type);
             e = e || window.event;
             this._trackEvent(e, instance);
         }, this);
         _.register_event(document, 'submit', handler, false, true);
         _.register_event(document, 'change', handler, false, true);
         _.register_event(document, 'click', handler, false, true);
+        _.register_event(document, 'touchend', handler, false, true);
     },
 
     _customProperties: {},
