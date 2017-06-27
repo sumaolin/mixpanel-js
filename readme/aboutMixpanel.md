@@ -10,3 +10,5 @@ JSON.parse(decodeURIComponent('%7B%22action%22%3A%22mpeditor%22%2C%22appHost%22%
 
    1. init_from_snippet() 中 进行mixpanel 中的引人
    2. extend_mp() 中，封装了loadash 的_的私有方法，通过`mixpanel._.query_dom()`调用
+
+   3. _shouldTrackDomEvent() 返回是否 要监听的事件
