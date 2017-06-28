@@ -353,7 +353,7 @@ var autotrack = {
             arrDom.push(curElement)
         });
         arrDom.reverse();
-        console.log(arrDom.join(' '));
+        // console.log(arrDom.join(' '));
         return arrDom.join(' ');
     },
 
@@ -392,7 +392,7 @@ var autotrack = {
             return;
         }
         this._initializedTokens.push(token);
-        /*
+        
         if (!this._maybeLoadEditor(instance)) { // don't autotrack actions when the editor is enabled
             var parseDecideResponse = _.bind(function(response) {
                 if (response && response['config'] && response['config']['enable_collect_everything'] === true) {
@@ -400,7 +400,7 @@ var autotrack = {
                     if (response['custom_properties']) {
                         this._customProperties = response['custom_properties'];
                     }
-
+                    // track pageView
                     instance.track('$web_event', _.extend({
                         '$title': document.title
                     }, this._getDefaultProperties('pageview')));
@@ -423,16 +423,17 @@ var autotrack = {
             );
             
         }
-        */
-
+        
+    /*
         // 直接开启 autoTrack 不通过发送dicede 请求觉得
         instance.track('$web_event', _.extend({
             '$title': document.title
         }, this._getDefaultProperties('pageview')));
 
         this._addDomEventHandlers(instance);
+    */
     },
-    /*
+    
     // Dom选择器相关的参数解析
     _editorParamsFromHash: function(instance, hash) {
         var editorParams;
@@ -456,7 +457,7 @@ var autotrack = {
             if (state['desiredHash']) {
                 window.location.hash = state['desiredHash'];
             } else if (window.history) {
-                history.replaceState('', document.title, window.location.pathname + window.location.search); // completely remove hash
+                // history.replaceState('', document.title, window.location.pathname + window.location.search); // completely remove hash
             } else {
                 window.location.hash = ''; // clear hash (but leaves # unfortunately)
             }
@@ -465,7 +466,7 @@ var autotrack = {
         }
         return editorParams;
     },
-    */
+    
 
     /**
      * To load the visual editor, we need an access token and other state. That state comes from one of three places:
@@ -474,14 +475,15 @@ var autotrack = {
      * 3. From session storage under the key `editorParams` if the editor was initialized on a previous page
      */
     // 是否加载 dom选择器
-    /*
     _maybeLoadEditor: function(instance) {
         var parseFromUrl = false;
         if (_.getHashParam(window.location.hash, 'state')) {
             var state = _.getHashParam(window.location.hash, 'state');
             state = JSON.parse(decodeURIComponent(state));
+
             parseFromUrl = state['action'] === 'mpeditor';
         }
+        // console.log(_.getHashParam(window.location.hash, 'state'));
         var parseFromStorage = !!window.sessionStorage.getItem('_mpcehash');
         var editorParams;
 
@@ -493,7 +495,7 @@ var autotrack = {
         } else { // get credentials from sessionStorage from a previous initialzation
             editorParams = JSON.parse(window.sessionStorage.getItem('editorParams') || '{}');
         }
-
+        console.log(editorParams);
         if (editorParams['projectToken'] && instance.get_config('token') === editorParams['projectToken']) {
             this._loadEditor(instance, editorParams);
             return true;
@@ -506,6 +508,7 @@ var autotrack = {
     // 加载 dom选择器
     _editorLoaded: false,
     _loadEditor: function(instance, editorParams) {
+        console.log(editorParams);
         if (!this._editorLoaded) {
             this._editorLoaded = true;
             var editorUrl;
@@ -517,13 +520,13 @@ var autotrack = {
                 editorUrl = siteMedia + '/bundle-webpack/reports/collect-everything/editor.min.js' + cacheBuster;
             }
             this._loadScript(editorUrl, function() {
-                window['mp_load_editor'](editorParams);
+                window['kmEditor'].init(editorParams);
             });
             return true;
         }
         return false;
     },
-    */
+    
 
     // this is a mechanism to ramp up CE with no server-side interaction.
     // when CE is active, every page load results in a decide request. we
