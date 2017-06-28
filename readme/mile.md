@@ -24,3 +24,8 @@
 1. huggies-2016t3中是移动端的项目，所以事件类型 中使用了 touchend click 同时绑定的写法，但是该事件不触发, 只能单独使用click
 > *next*: 添加touch 事件监听的支持
 *done*: (autotrack.js line 110) 通过添加判断 touchend 添加默认监听事件
+
+
+## 2017-06-28
+
+1. 通过URL的hash 动态加载 editor Ok

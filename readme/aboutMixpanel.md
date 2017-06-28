@@ -12,3 +12,25 @@ JSON.parse(decodeURIComponent('%7B%22action%22%3A%22mpeditor%22%2C%22appHost%22%
    2. extend_mp() 中，封装了loadash 的_的私有方法，通过`mixpanel._.query_dom()`调用
 
    3. _shouldTrackDomEvent() 返回是否 要监听的事件
+
+## 判断是否加载  editor (`autotrack.js`) 代码中
+
+  1. _maybeLoadEditor() // 判断是否加载 editor
+  2. _loadEditor()  // 动态加载editor
+  3. _editorParamsFromHash() // history.replaceState去掉了hash 值
+
+  > _maybeLoadEditor() 中通过hash 加载的参数值#state=%7B%22action%22%3A%22mpeditor%22%2C%22projectToken%22%3A%22012c230f236d6a3f761ba956e7dff26a%22%7D
+  ```
+  state={
+    action: 'mpeditor',
+    token: '012c230f236d6a3f761ba956e7dff26a',
+    expires_in: '1498641877618'
+  }
+
+  getState(jsonObj) {
+    return encodeURIComponent(JSON.stringify(jsonObj));
+  }
+
+  getState(state) // %7B%22action%22%3A%22mpeditor%22%2C%22token%22%3A%22012c230f236d6a3f761ba956e7dff26a%22%2C%22expires_in%22%3A%221498641877618%22%7D
+
+  http://www.km.com/#state=%7B%22action%22%3A%22mpeditor%22%2C%22token%22%3A%22012c230f236d6a3f761ba956e7dff26a%22%2C%22expires_in%22%3A%221498641877618%22%7D
