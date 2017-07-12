@@ -318,11 +318,19 @@ var autotrack = {
 
                 elementsJson.push(this._getPropertiesFromElement(el));
             }, this);
+                
+            
 
             if (explicitNoTrack) {
                 return false;
             }
-            var domPath = this._getDomPath(elementsJson);
+            // console.log(elementsJson);
+            var domPath = this._getStrictlyDomPath(elementsJson).join(' ');
+            console.log(domPath);
+            console.log(this._shouldTrackDomEventByStrictlyDomPath(domPath))
+            if(!this._shouldTrackDomEventByStrictlyDomPath(domPath)){
+                return false;
+            }
             var props = _.extend(
                 this._getDefaultProperties(e.type),
                 {
@@ -343,18 +351,36 @@ var autotrack = {
     },
 
     // _trackEvent 中调用获取当前的路径
-    _getDomPath: function(elementsJson) {
+    _getStrictlyDomPath: function(elementsJson) {
         // console.log(elementsJson);
         var arrDom = []
         _.each(elementsJson, function(ej) {
             // console.log(ej['tag_name']);
-            var firstClass = ej['classes'].length > 0 ? ej['classes'][0] : '';
-            var curElement = ej['tag_name'] + '.' + firstClass;
+            var nthc = ej['nth_child'];
+            var nth2t = ej['nth_of_type'];
+            var strclasses = ej['classes'].length > 0 ?  '.'  + ej['classes'].join('.') : '';
+            var curElement = ej['tag_name'] + strclasses + ':nth-child(' + nthc + '):nth_of_type(' + nth2t + ')';
             arrDom.push(curElement)
         });
         arrDom.reverse();
         // console.log(arrDom.join(' '));
-        return arrDom.join(' ');
+        return arrDom;
+    },
+
+    _shouldTrackDomEventByStrictlyDomPath: function(strictlyDomPath) {
+        var isTrack = false;
+        var sList = this._SelectorList;
+        if(!sList || sList.length == 0) {
+            return false;
+        }else{
+            for(var a=0; a<sList.length; a++){
+                if(sList[a].domPath == strictlyDomPath){
+                    isTrack = true;
+                    return true;
+                }
+            }
+            return isTrack;
+        }
     },
 
     // only reason is to stub for unit tests
@@ -365,7 +391,7 @@ var autotrack = {
     // 添加document 的 事件绑定
     _addDomEventHandlers: function(instance) {
         var handler = _.bind(function(e) {
-            console.log(e.type);
+            // console.log(e.type);
             e = e || window.event;
             this._trackEvent(e, instance);
         }, this);
@@ -376,6 +402,7 @@ var autotrack = {
     },
 
     _customProperties: {},
+    _SelectorList: [],
 
     // 初始化
     init: function(instance) {
@@ -395,29 +422,46 @@ var autotrack = {
         
         if (!this._maybeLoadEditor(instance)) { // don't autotrack actions when the editor is enabled
             var parseDecideResponse = _.bind(function(response) {
-                if (response && response['config'] && response['config']['enable_collect_everything'] === true) {
+                // if (response && response['config'] && response['config']['enable_collect_everything'] === true) {
 
-                    if (response['custom_properties']) {
-                        this._customProperties = response['custom_properties'];
-                    }
-                    // track pageView
+                //     if (response['custom_properties']) {
+                //         this._customProperties = response['custom_properties'];
+                //     }
+                //     // track pageView
+                //     instance.track('$web_event', _.extend({
+                //         '$title': document.title
+                //     }, this._getDefaultProperties('pageview')));
+
+                //     this._addDomEventHandlers(instance);
+
+                // } else {
+                //     instance['__autotrack_enabled'] = false;
+                // }
+                /*   
+
+                */
+               
+                // console.log(response.rst)
+               if(response && response.errno == 0){
+                    this._SelectorList = response.rst
                     instance.track('$web_event', _.extend({
                         '$title': document.title
                     }, this._getDefaultProperties('pageview')));
 
                     this._addDomEventHandlers(instance);
-
-                } else {
-                    instance['__autotrack_enabled'] = false;
-                }
+               }
             }, this);
             
+
+            var token = instance.get_config('token');
+            var persistence = instance['persistence'];
+            var urlId = persistence.properties()['urlid'];
             instance._send_request(
-                instance.get_config('decide_host') + '/decide/', {
+                'http://datalink.kongming-inc.com/wechat/api_test/selectList.php', {
+                    'urlId': urlId,
+                    'token': token,
                     'verbose': true,
-                    'version': '1',
-                    'lib': 'web',
-                    'token': token
+                    'url': window.location.href
                 },
                 instance._prepare_callback(parseDecideResponse)
             );
@@ -457,7 +501,7 @@ var autotrack = {
             if (state['desiredHash']) {
                 window.location.hash = state['desiredHash'];
             } else if (window.history) {
-                // history.replaceState('', document.title, window.location.pathname + window.location.search); // completely remove hash
+                history.replaceState('', document.title, window.location.pathname + window.location.search); // completely remove hash
             } else {
                 window.location.hash = ''; // clear hash (but leaves # unfortunately)
             }
@@ -481,7 +525,7 @@ var autotrack = {
             var state = _.getHashParam(window.location.hash, 'state');
             state = JSON.parse(decodeURIComponent(state));
 
-            parseFromUrl = state['action'] === 'mpeditor';
+            parseFromUrl = state['action'] === 'kmeditor';
         }
         // console.log(_.getHashParam(window.location.hash, 'state'));
         var parseFromStorage = !!window.sessionStorage.getItem('_mpcehash');
@@ -495,7 +539,7 @@ var autotrack = {
         } else { // get credentials from sessionStorage from a previous initialzation
             editorParams = JSON.parse(window.sessionStorage.getItem('editorParams') || '{}');
         }
-        console.log(editorParams);
+        // console.log(editorParams);
         if (editorParams['projectToken'] && instance.get_config('token') === editorParams['projectToken']) {
             this._loadEditor(instance, editorParams);
             return true;
@@ -515,9 +559,9 @@ var autotrack = {
             var cacheBuster = '?_ts=' + (new Date()).getTime();
             var siteMedia = instance.get_config('app_host') + '/site_media';
             if (Config.DEBUG) {
-                editorUrl = siteMedia + '/compiled/reports/collect-everything/editor.js' + cacheBuster;
+                editorUrl = 'http://datalink.kongming-inc.com/wechat/demo/static/js/kmEditor.js' + cacheBuster;
             } else {
-                editorUrl = siteMedia + '/bundle-webpack/reports/collect-everything/editor.min.js' + cacheBuster;
+                editorUrl = 'http://datalink.kongming-inc.com/wechat/demo/static/js/kmEditor.js';
             }
             this._loadScript(editorUrl, function() {
                 window['kmEditor'].init(editorParams);

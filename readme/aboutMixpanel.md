@@ -27,8 +27,8 @@ JSON.parse(decodeURIComponent('%7B%22action%22%3A%22mpeditor%22%2C%22appHost%22%
     expires_in: '1498641877618'
   }
 
-  getState(jsonObj) {
-    return encodeURIComponent(JSON.stringify(jsonObj));
+  getState(state) {
+    return encodeURIComponent(JSON.stringify(state));
   }
 
   getState(state) // %7B%22action%22%3A%22mpeditor%22%2C%22token%22%3A%22012c230f236d6a3f761ba956e7dff26a%22%2C%22expires_in%22%3A%221498641877618%22%7D
