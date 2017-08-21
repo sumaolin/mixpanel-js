@@ -457,7 +457,7 @@ var autotrack = {
             var persistence = instance['persistence'];
             var urlId = persistence.properties()['urlid'];
             instance._send_request(
-                'http://datalink.kongming-inc.com/wechat/api_test/selectList.php', {
+                'http://datalink.kongming-inc.com/wechat/api_test/selectListAlias.php', {
                     'urlId': urlId,
                     'token': token,
                     'verbose': true,

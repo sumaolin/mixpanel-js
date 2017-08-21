@@ -84,10 +84,10 @@ var ENQUEUE_REQUESTS = !USE_XHR && (userAgent.indexOf('MSIE') === -1) && (userAg
  * Module-level globals
  */
 var DEFAULT_CONFIG = {
-    'api_host':               HTTP_PROTOCOL + 'datalink.kmsocial.cn',
-    'app_host':               HTTP_PROTOCOL + 'datalink.kmsocial.cn',
+    'api_host':               HTTP_PROTOCOL + 'datalink.kongming-inc.com',
+    'app_host':               HTTP_PROTOCOL + 'datalink.kongming-inc.com',
     'autotrack':              true,
-    'cdn':                    HTTP_PROTOCOL + 'datalink.kmsocial.cn',
+    'cdn':                    HTTP_PROTOCOL + 'datalink.kongming-inc.com',
     'cross_subdomain_cookie': true,
     'persistence':            'cookie',
     'persistence_name':       '',
@@ -1125,7 +1125,7 @@ MixpanelLib.prototype.track = function(event_name, properties, callback) {
     console.log(truncated_data);
 
     this._send_request(
-        this.get_config('api_host') + '/api/receiveData.php',
+        this.get_config('api_host') + '/api_test/receiveData.php',
         { 'data': encoded_data },
         this._prepare_callback(callback, truncated_data)
     );
