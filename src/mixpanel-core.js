@@ -1125,7 +1125,7 @@ MixpanelLib.prototype.track = function(event_name, properties, callback) {
     console.log(truncated_data);
 
     this._send_request(
-        this.get_config('api_host') + '/api_test/receiveData.php',
+        this.get_config('api_host') + '/api/receiveData.php',
         { 'data': encoded_data },
         this._prepare_callback(callback, truncated_data)
     );
