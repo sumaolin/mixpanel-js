@@ -79,3 +79,10 @@ js get请求因为URL长度的限制不能超过2k, 所以recieveData.php?data= 
 2. onbeforeunload 页面关闭事件的监听
 3. _getPropertiesFromElement 不添加 style 属性的值
 4. $el_text 的值只获得点击元素的el.textContent 的值
+
+## 2017-10-13
+
+bug: _.truncate(data, 255)中造成的 dom_path 被截取，后端无法匹配的问题
+
+1. truncate 是深度迭代对象中的每一个attr 值都会进行截取
+2. $web_event->$event_type=pageview  是获取埋点信息触发的 晚于 mp_page_view  所以去掉$event_type=pageview 不进行重复的Pv 统计
