@@ -455,9 +455,9 @@ var autotrack = {
                 // console.log(response.rst)
                if(response && response.errno == 0){
                     this._SelectorList = response.rst
-                    instance.track('$web_event', _.extend({
-                        '$title': document.title
-                    }, this._getDefaultProperties('pageview')));
+                    // instance.track('$web_event', _.extend({
+                    //     '$title': document.title
+                    // }, this._getDefaultProperties('pageview')));
 
                     this._addDomEventHandlers(instance);
                }
