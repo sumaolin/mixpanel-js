@@ -370,7 +370,11 @@ _.truncate = function(obj, length) {
     } else if (_.isObject(obj)) {
         ret = {};
         _.each(obj, function(val, key) {
-            ret[key] = _.truncate(val, length);
+            if (key === '$dom_path') {
+                ret[key] = val;
+            } else {
+                ret[key] = _.truncate(val, length);
+            }
         });
     } else {
         ret = obj;
