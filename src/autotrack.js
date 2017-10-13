@@ -47,7 +47,7 @@ var autotrack = {
 
     _getPropertiesFromElement: function(elem) {
         var props = {
-            'classes': this._getClassName(elem).split(' '),
+            // 'classes': this._getClassName(elem).split(' '),
             'tag_name': elem.tagName.toLowerCase()
         };
 
