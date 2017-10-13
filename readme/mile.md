@@ -86,3 +86,7 @@ bug: _.truncate(data, 255)中造成的 dom_path 被截取，后端无法匹配�
 
 1. truncate 是深度迭代对象中的每一个attr 值都会进行截取
 2. $web_event->$event_type=pageview  是获取埋点信息触发的 晚于 mp_page_view  所以去掉$event_type=pageview 不进行重复的Pv 统计
+3. 'mp_lib': 'web', 信息去掉
+4. $elements 中的信息去掉classes 数组，通过attr__class 查看相关信息
+5. 4 撤销了，改为不记录 _noTrackAttr不需要记录的属性值数组中添加 class 属性，进而不记录 attr__class
+6. utils.js 中 truncate 排除掉 obj.key === '$dom_path' 的值
