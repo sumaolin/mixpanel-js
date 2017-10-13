@@ -331,7 +331,7 @@ var autotrack = {
             }
             // console.log(elementsJson);
             var domPath = this._getStrictlyDomPath(elementsJson).join(' ');
-            console.log(domPath);
+            // console.log(domPath);
             // console.log(this._shouldTrackDomEventByStrictlyDomPath(domPath))
             if(!this._shouldTrackDomEventByStrictlyDomPath(domPath)){
                 return false;
