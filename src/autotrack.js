@@ -59,7 +59,9 @@ var autotrack = {
         }
 
         _.each(elem.attributes, function(attr) {
-            props['attr__' + attr.name] = attr.value;
+            if(attr.name !== 'style') {
+                props['attr__' + attr.name] = attr.value;
+            }
         });
 
         var nthChild = 1;
@@ -303,7 +305,7 @@ var autotrack = {
                     form = el;
                 }
                 // crawl up to max of 5 nodes to populate text content
-                if (!elementText && idx < 5 && el.textContent) {
+                if (!elementText && idx < 2 && el.textContent) {
                     var textContent = _.trim(el.textContent);
                     if (textContent) {
                         elementText = textContent.replace(/[\r\n]/g, ' ').replace(/[ ]+/g, ' ').substring(0, 255);
@@ -326,18 +328,21 @@ var autotrack = {
             }
             // console.log(elementsJson);
             var domPath = this._getStrictlyDomPath(elementsJson).join(' ');
-            console.log(domPath);
-            console.log(this._shouldTrackDomEventByStrictlyDomPath(domPath))
+            // console.log(domPath);
+            // console.log(this._shouldTrackDomEventByStrictlyDomPath(domPath))
             if(!this._shouldTrackDomEventByStrictlyDomPath(domPath)){
                 return false;
             }
+            // console.log(e.clientX);
             var props = _.extend(
                 this._getDefaultProperties(e.type),
                 {
                     '$elements':  elementsJson,
                     '$el_attr__href': href,
                     '$el_text': elementText,
-                    '$dom_path': domPath
+                    '$dom_path': domPath,
+                    'clientX': e.clientX ? e.clientX : '',
+                    'clientY': e.clientY ? e.clientY : ''
                 },
                 this._getCustomProperties(targetElementList)
             );
@@ -358,7 +363,7 @@ var autotrack = {
             // console.log(ej['tag_name']);
             var nthc = ej['nth_child'];
             var nth2t = ej['nth_of_type'];
-            var strclasses = ej['classes'].length > 0 ?  '.'  + ej['classes'].join('.') : '';
+            var strclasses = ej['classes'].length > 0 && ej['classes'][0] != '' ?  '.'  + ej['classes'].join('.') : '';
             var curElement = ej['tag_name'] + strclasses + ':nth-child(' + nthc + '):nth_of_type(' + nth2t + ')';
             arrDom.push(curElement)
         });
@@ -395,6 +400,12 @@ var autotrack = {
             e = e || window.event;
             this._trackEvent(e, instance);
         }, this);
+
+        window.onbeforeunload = function() {
+            instance.track('$web_event', {
+                '$event_type': 'onbeforeunload'
+            });
+        }
         _.register_event(document, 'submit', handler, false, true);
         _.register_event(document, 'change', handler, false, true);
         _.register_event(document, 'click', handler, false, true);
@@ -457,7 +468,7 @@ var autotrack = {
             var persistence = instance['persistence'];
             var urlId = persistence.properties()['urlid'];
             instance._send_request(
-                'http://datalink.kongming-inc.com/wechat/api_test/selectListAlias.php', {
+                'http://datalink.kongming-inc.com/wechat/api/selectListAlias.php', {
                     'urlId': urlId,
                     'token': token,
                     'verbose': true,
@@ -559,9 +570,9 @@ var autotrack = {
             var cacheBuster = '?_ts=' + (new Date()).getTime();
             var siteMedia = instance.get_config('app_host') + '/site_media';
             if (Config.DEBUG) {
-                editorUrl = 'http://datalink.kongming-inc.com/wechat/demo/static/js/kmEditor.js' + cacheBuster;
+                editorUrl = 'http://datalink.kongming-inc.com/static/js/kmEditor.js' + cacheBuster;
             } else {
-                editorUrl = 'http://datalink.kongming-inc.com/wechat/demo/static/js/kmEditor.js';
+                editorUrl = 'http://datalink.kongming-inc.com/static/js/kmEditor.js';
             }
             this._loadScript(editorUrl, function() {
                 window['kmEditor'].init(editorParams);
