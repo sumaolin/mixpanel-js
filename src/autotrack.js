@@ -5,6 +5,7 @@ import { _ } from './utils';
 // ex: https://www.codingame.com/
 var ELEMENT_NODE = 1;
 var TEXT_NODE = 3;
+var _noTrackAttr = ['styles', 'class'];
 
 var autotrack = {
     _initializedTokens: [],
@@ -47,7 +48,7 @@ var autotrack = {
 
     _getPropertiesFromElement: function(elem) {
         var props = {
-            // 'classes': this._getClassName(elem).split(' '),
+            'classes': this._getClassName(elem).split(' '),
             'tag_name': elem.tagName.toLowerCase()
         };
 
@@ -59,7 +60,9 @@ var autotrack = {
         }
 
         _.each(elem.attributes, function(attr) {
-            if(attr.name !== 'style') {
+            
+            if (_.includes(_noTrackAttr, attr.name)) { // _noTrackAttr不需要记录的属性值
+            }else{
                 props['attr__' + attr.name] = attr.value;
             }
         });
@@ -328,7 +331,7 @@ var autotrack = {
             }
             // console.log(elementsJson);
             var domPath = this._getStrictlyDomPath(elementsJson).join(' ');
-            // console.log(domPath);
+            console.log(domPath);
             // console.log(this._shouldTrackDomEventByStrictlyDomPath(domPath))
             if(!this._shouldTrackDomEventByStrictlyDomPath(domPath)){
                 return false;
