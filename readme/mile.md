@@ -29,3 +29,45 @@
 ## 2017-06-28
 
 1. 通过URL的hash 动态加载 editor Ok
+
+## 2017-08-28
+
+### 停留时间的统计
+
+参考资料：
+1. [各个浏览器中对于beforeunload事件和unload事件的对比](http://sinaad.github.io/xfe/2016/06/29/beforeunlod-vs-unload/)
+> beforunload 比 unload 事件支持更好，想接口发送当前页面的信息
+
+2. [previousSibling、previousElementSibling的区别](http://blog.csdn.net/sunlizhen/article/details/73437102)
+> 获取当前元素的上一个节点
+
+``` javascript
+window.onbeforeunload = function() {
+  instance.track('$web_event', {
+      '$event_type': 'onbeforeunload'
+  });
+}
+```
+
+统计停留时间的
+
+## 2017-09-08
+
+接口修改 
+
+获取已选择埋点列表
+
+原：http://datalink.kongming-inc.com/wechat/api_test/selectListAlias.php
+现：http://datalink.kongming-inc.com/wechat/api/selectListAlias.php
+
+收集埋点信息的接口
+
+原：http://datalink.kongming-inc.com/wechat/api_test/receiveData.php
+现：http://datalink.kongming-inc.com/wechat/api/receiveData.php
+
+### commit log 
+
+1. api接口改为线上接口
+2. onbeforeunload 页面关闭事件的监听
+3. _getPropertiesFromElement 不添加 style 属性的值
+4. $el_text 的值只获得点击元素的el.textContent 的值
