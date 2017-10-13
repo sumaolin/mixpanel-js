@@ -1511,7 +1511,6 @@ _.info = {
             '$browser_version': _.info.browserVersion(userAgent, navigator.vendor, window.opera),
             '$screen_height': screen.height,
             '$screen_width': screen.width,
-            'mp_lib': 'web',
             '$lib_version': Config.LIB_VERSION
         });
     },
