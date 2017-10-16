@@ -100,7 +100,7 @@ var DEFAULT_CONFIG = {
     'img':                    false,
     'track_pageview':         true,
     'debug':                  false,
-    'track_links_timeout':    300,
+    'track_links_timeout':    500,
     'cookie_expiration':      365,
     'upgrade':                false,
     'disable_persistence':    false,
