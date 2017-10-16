@@ -61,7 +61,7 @@ var autotrack = {
 
         _.each(elem.attributes, function(attr) {
             
-            if (_.includes(_noTrackAttr, attr.name)) { // _noTrackAtträ¸éœ€è¦è®°å½•çš„å±æ€§å€¼
+            if (_.includes(_noTrackAttr, attr.name)) { // _noTrackAttr²»ĞèÒª¼ÇÂ¼µÄÊôĞÔÖµ
             }else{
                 props['attr__' + attr.name] = attr.value;
             }
@@ -281,10 +281,11 @@ var autotrack = {
             return e.target;
         }
     },
-    // è·å–dom èŠ‚ç‚¹çš„æ¸²æŸ“è·¯å¾„ç­‰ä¿¡æ¯
+    // »ñÈ¡dom ½ÚµãµÄäÖÈ¾Â·¾¶µÈĞÅÏ¢
     _trackEvent: function(e, instance) {
         /*** Don't mess with this code without running IE8 tests on it ***/
         var target = this._getEventTarget(e);
+        var timeout = instance.get_config('track_links_timeout');
         if (target.nodeType === TEXT_NODE) { // defeat Safari bug (see: http://www.quirksmode.org/js/events_properties.html)
             target = target.parentNode;
         }
@@ -349,16 +350,41 @@ var autotrack = {
                 },
                 this._getCustomProperties(targetElementList)
             );
-
+            // form 
             if (form && (e.type === 'submit' || e.type === 'click')) {
+                e.preventDefault();
+
                 _.extend(props, this._getFormFieldProperties(form));
+                
+                function form_after_track_handler() {
+                    setTimeout(function() {
+                        form.submit();
+                    }, 0);
+                }
+                window.setTimeout(form_after_track_handler, timeout);
+            }  
+            // a 
+            if (href && (!href.indexOf('javascript:') == 0)) {
+                if (e.type === 'touchend' || e.type === 'click') {
+                    var new_tab = (e.which === 2 || e.metaKey || e.ctrlKey || this._getEventTarget(e).target === '_blank' );
+                    if(!new_tab) {
+                        e.preventDefault();
+                    }
+                }
+                function link_after_track_handler() {
+                    setTimeout(function() {
+                        window.location = href;
+                    }, 0);
+                }
+                window.setTimeout(link_after_track_handler, timeout);
             }
+
             instance.track('$web_event', props);
             return true;
         }
     },
 
-    // _trackEvent ä¸­è°ƒç”¨è·å–å½“å‰çš„è·¯å¾„
+    // _trackEvent ÖĞµ÷ÓÃ»ñÈ¡µ±Ç°µÄÂ·¾¶
     _getStrictlyDomPath: function(elementsJson) {
         // console.log(elementsJson);
         var arrDom = []
@@ -396,7 +422,7 @@ var autotrack = {
     _navigate: function(href) {
         window.location.href = href;
     },
-    // æ·»åŠ document çš„ äº‹ä»¶ç»‘å®š
+    // Ìí¼Ódocument µÄ ÊÂ¼ş°ó¶¨
     _addDomEventHandlers: function(instance) {
         var handler = _.bind(function(e) {
             // console.log(e.type);
@@ -418,7 +444,7 @@ var autotrack = {
     _customProperties: {},
     _SelectorList: [],
 
-    // åˆå§‹åŒ–
+    // ³õÊ¼»¯
     init: function(instance) {
         if (!(document && document.body)) {
             console.log('document not ready yet, trying again in 500 milliseconds...');
@@ -483,7 +509,7 @@ var autotrack = {
         }
         
     /*
-        // ç›´æ¥å¼€å¯ autoTrack ä¸é€šè¿‡å‘é€dicede è¯·æ±‚è§‰å¾—
+        // Ö±½Ó¿ªÆô autoTrack ²»Í¨¹ı·¢ËÍdicede ÇëÇó¾õµÃ
         instance.track('$web_event', _.extend({
             '$title': document.title
         }, this._getDefaultProperties('pageview')));
@@ -492,7 +518,7 @@ var autotrack = {
     */
     },
     
-    // Domé€‰æ‹©å™¨ç›¸å…³çš„å‚æ•°è§£æ
+    // DomÑ¡ÔñÆ÷Ïà¹ØµÄ²ÎÊı½âÎö
     _editorParamsFromHash: function(instance, hash) {
         var editorParams;
         try {
@@ -532,7 +558,7 @@ var autotrack = {
      * 2. From session storage under the key `_mpcehash` if the snippet already parsed the hash
      * 3. From session storage under the key `editorParams` if the editor was initialized on a previous page
      */
-    // æ˜¯å¦åŠ è½½ domé€‰æ‹©å™¨
+    // ÊÇ·ñ¼ÓÔØ domÑ¡ÔñÆ÷
     _maybeLoadEditor: function(instance) {
         var parseFromUrl = false;
         if (_.getHashParam(window.location.hash, 'state')) {
@@ -563,7 +589,7 @@ var autotrack = {
     },
 
     // only load the codeless event editor once, even if there are multiple instances of MixpanelLib
-    // åŠ è½½ domé€‰æ‹©å™¨
+    // ¼ÓÔØ domÑ¡ÔñÆ÷
     _editorLoaded: false,
     _loadEditor: function(instance, editorParams) {
         console.log(editorParams);
