@@ -90,3 +90,18 @@ bug: _.truncate(data, 255)中造成的 dom_path 被截取，后端无法匹配�
 4. $elements 中的信息去掉classes 数组，通过attr__class 查看相关信息
 5. 4 撤销了，改为不记录 _noTrackAttr不需要记录的属性值数组中添加 class 属性，进而不记录 attr__class
 6. utils.js 中 truncate 排除掉 obj.key === '$dom_path' 的值
+
+## 2017-10-16 
+
+### track中A标签 的链接在当前页面跳转的时候，chrome 报错：`Provisional headers are shown` 
+
+1. [Chrome 里的请求报错 "CAUTION: Provisional headers are shown" 是什么意思?](https://segmentfault.com/q/1010000000364871)
+2. [Chrome 32 开发者工具的几个变化](https://imququ.com/post/devtool-in-chrome32.html)
+
+
+#### 解决办法：
+
+参考 mixpanel-core.js 中line 221 preventDefault() 
+
+#### 新问题 onbeforeunload 的track 请求被取消了
+
