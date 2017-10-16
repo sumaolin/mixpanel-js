@@ -355,7 +355,7 @@ var autotrack = {
                 e.preventDefault();
 
                 _.extend(props, this._getFormFieldProperties(form));
-                
+
                 function form_after_track_handler() {
                     setTimeout(function() {
                         form.submit();
@@ -378,7 +378,7 @@ var autotrack = {
                 }
                 window.setTimeout(link_after_track_handler, timeout);
             }
-
+            console.log(props['$event_type']);
             instance.track('$web_event', props);
             return true;
         }
