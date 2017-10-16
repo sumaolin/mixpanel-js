@@ -352,16 +352,16 @@ var autotrack = {
             );
             // form 
             if (form && (e.type === 'submit' || e.type === 'click')) {
-                e.preventDefault();
+                // e.preventDefault();
 
                 _.extend(props, this._getFormFieldProperties(form));
 
-                function form_after_track_handler() {
-                    setTimeout(function() {
-                        form.submit();
-                    }, 0);
-                }
-                window.setTimeout(form_after_track_handler, timeout);
+                // function form_after_track_handler() {
+                //     setTimeout(function() {
+                //         form.submit();
+                //     }, 0);
+                // }
+                // window.setTimeout(form_after_track_handler, timeout);
             }  
             // a 
             if (href && (!href.indexOf('javascript:') == 0)) {
