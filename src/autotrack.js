@@ -334,10 +334,10 @@ var autotrack = {
             var domPath = this._getStrictlyDomPath(elementsJson).join(' ');
             // console.log(domPath);
             // console.log(this._shouldTrackDomEventByStrictlyDomPath(domPath))
-            if(!this._shouldTrackDomEventByStrictlyDomPath(domPath)){
-                return false;
-            }
-            // console.log(e.clientX);
+            // if(!this._shouldTrackDomEventByStrictlyDomPath(domPath)){
+            //     return false;
+            // }
+            // console.log(domPath);
             var props = _.extend(
                 this._getDefaultProperties(e.type),
                 {
@@ -492,19 +492,20 @@ var autotrack = {
                }
             }, this);
             
-
-            var token = instance.get_config('token');
-            var persistence = instance['persistence'];
-            var urlId = persistence.properties()['urlid'];
-            instance._send_request(
-                'http://datalink.kongming-inc.com/wechat/api/selectListAlias.php', {
-                    'urlId': urlId,
-                    'token': token,
-                    'verbose': true,
-                    'url': window.location.href
-                },
-                instance._prepare_callback(parseDecideResponse)
-            );
+            this._addDomEventHandlers(instance);
+            
+            // var token = instance.get_config('token');
+            // var persistence = instance['persistence'];
+            // var urlId = persistence.properties()['urlid'];
+            // instance._send_request(
+            //     'http://datalink.kongming-inc.com/wechat/api/selectListAlias.php', {
+            //         'urlId': urlId,
+            //         'token': token,
+            //         'verbose': true,
+            //         'url': window.location.href
+            //     },
+            //     instance._prepare_callback(parseDecideResponse)
+            // );
             
         }
         
