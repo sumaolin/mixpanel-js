@@ -107,3 +107,29 @@ bug: _.truncate(data, 255)中造成的 dom_path 被截取，后端无法匹配�
 
 #### 解决办法只对a 跳转有效，对于form 的 form_after_track_handler 会出现bug，（场景：表单中发送验证码的按钮，不会提交整个表单，form_after_track_handler的处理就直接提交了整个表单是bug )，暂时不对form 进行处理了
 
+
+## 2017-10-17
+
+### 问题
+
+#### 页面埋点的按钮数据我自己测试是tracked 而上海那边测试就是没track, 一直搞不清原因：今天会议的时候远程视频看上海那边测试操作了一会，发现再优惠券领取页面点击的区域是不同的，我点击的是文案区域（左半部分大部分区域），对方点击的是领取区域（右半部分一小部分），让同事点击相同的区域发现数据track了，所以问题的症结在于：交互区域的右半部分没有触发touchend事件
+
+### 解决办法
+
+1. index 页面的 发送验证码按钮 和 提交表单按钮 通过自定义埋点 解决
+2. coupon 页面的优惠券领取，修改样式扩大点击区域
+
+
+### 经验学习
+
+_.safeWrap 来实现class 内置函数的执行，对于有error的统一进行报错处理
+
+## 2017-10-18
+
+1. [前端魔法堂——异常不仅仅是try/catch](http://www.cnblogs.com/fsjohnhuang/p/7685144.html)
+
+后期添加下对error信息的收集
+
+#### 解决数据时有时无的情况
+
+去掉了 selectListAlias.php 接口，开启了autotrack模式，把页面所有的click, touchend, submit， change 交互的数据收集，最后通过dom_path 在elemental中进行数据筛选
