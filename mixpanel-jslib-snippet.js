@@ -4,7 +4,7 @@
 // ==/ClosureCompiler==
 
 /** @define {string} */
-var MIXPANEL_LIB_URL = '//datalink.kongming-inc.com/mixpanel.min.js';
+var MIXPANEL_LIB_URL = '//k11.datalink.kongming-inc.com/static/js/mixpanel.min.js';
 
 (function(document, mixpanel){
     // Only stub out if this is the first time running the snippet.

@@ -84,10 +84,10 @@ var ENQUEUE_REQUESTS = !USE_XHR && (userAgent.indexOf('MSIE') === -1) && (userAg
  * Module-level globals
  */
 var DEFAULT_CONFIG = {
-    'api_host':               HTTP_PROTOCOL + 'datalink.kongming-inc.com',
-    'app_host':               HTTP_PROTOCOL + 'datalink.kongming-inc.com',
+    'api_host':               HTTP_PROTOCOL + 'k11.datalink.kongming-inc.com',
+    'app_host':               HTTP_PROTOCOL + 'k11.datalink.kongming-inc.com',
     'autotrack':              true,
-    'cdn':                    HTTP_PROTOCOL + 'datalink.kongming-inc.com',
+    'cdn':                    HTTP_PROTOCOL + 'k11.datalink.kongming-inc.com',
     'cross_subdomain_cookie': true,
     'persistence':            'cookie',
     'persistence_name':       '',

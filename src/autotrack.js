@@ -61,7 +61,7 @@ var autotrack = {
 
         _.each(elem.attributes, function(attr) {
             
-            if (_.includes(_noTrackAttr, attr.name)) { // _noTrackAttr²»ÐèÒª¼ÇÂ¼µÄÊôÐÔÖµ
+            if (_.includes(_noTrackAttr, attr.name)) { // _noTrackAttrï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµ
             }else{
                 props['attr__' + attr.name] = attr.value;
             }
@@ -281,7 +281,7 @@ var autotrack = {
             return e.target;
         }
     },
-    // »ñÈ¡dom ½ÚµãµÄäÖÈ¾Â·¾¶µÈÐÅÏ¢
+    // ï¿½ï¿½È¡dom ï¿½Úµï¿½ï¿½ï¿½ï¿½È¾Â·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
     _trackEvent: function(e, instance) {
         /*** Don't mess with this code without running IE8 tests on it ***/
         var target = this._getEventTarget(e);
@@ -384,7 +384,7 @@ var autotrack = {
         }
     },
 
-    // _trackEvent ÖÐµ÷ÓÃ»ñÈ¡µ±Ç°µÄÂ·¾¶
+    // _trackEvent ï¿½Ðµï¿½ï¿½Ã»ï¿½È¡ï¿½ï¿½Ç°ï¿½ï¿½Â·ï¿½ï¿½
     _getStrictlyDomPath: function(elementsJson) {
         // console.log(elementsJson);
         var arrDom = []
@@ -422,7 +422,7 @@ var autotrack = {
     _navigate: function(href) {
         window.location.href = href;
     },
-    // Ìí¼Ódocument µÄ ÊÂ¼þ°ó¶¨
+    // ï¿½ï¿½ï¿½document ï¿½ï¿½ ï¿½Â¼ï¿½ï¿½ï¿½
     _addDomEventHandlers: function(instance) {
         var handler = _.bind(function(e) {
             // console.log(e.type);
@@ -444,7 +444,7 @@ var autotrack = {
     _customProperties: {},
     _SelectorList: [],
 
-    // ³õÊ¼»¯
+    // ï¿½ï¿½Ê¼ï¿½ï¿½
     init: function(instance) {
         if (!(document && document.body)) {
             console.log('document not ready yet, trying again in 500 milliseconds...');
@@ -510,7 +510,7 @@ var autotrack = {
         }
         
     /*
-        // Ö±½Ó¿ªÆô autoTrack ²»Í¨¹ý·¢ËÍdicede ÇëÇó¾õµÃ
+        // Ö±ï¿½Ó¿ï¿½ï¿½ï¿½ autoTrack ï¿½ï¿½Í¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½dicede ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         instance.track('$web_event', _.extend({
             '$title': document.title
         }, this._getDefaultProperties('pageview')));
@@ -519,7 +519,7 @@ var autotrack = {
     */
     },
     
-    // DomÑ¡ÔñÆ÷Ïà¹ØµÄ²ÎÊý½âÎö
+    // DomÑ¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ØµÄ²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     _editorParamsFromHash: function(instance, hash) {
         var editorParams;
         try {
@@ -559,7 +559,7 @@ var autotrack = {
      * 2. From session storage under the key `_mpcehash` if the snippet already parsed the hash
      * 3. From session storage under the key `editorParams` if the editor was initialized on a previous page
      */
-    // ÊÇ·ñ¼ÓÔØ domÑ¡ÔñÆ÷
+    // ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ domÑ¡ï¿½ï¿½ï¿½ï¿½
     _maybeLoadEditor: function(instance) {
         var parseFromUrl = false;
         if (_.getHashParam(window.location.hash, 'state')) {
@@ -590,7 +590,7 @@ var autotrack = {
     },
 
     // only load the codeless event editor once, even if there are multiple instances of MixpanelLib
-    // ¼ÓÔØ domÑ¡ÔñÆ÷
+    // ï¿½ï¿½ï¿½ï¿½ domÑ¡ï¿½ï¿½ï¿½ï¿½
     _editorLoaded: false,
     _loadEditor: function(instance, editorParams) {
         console.log(editorParams);
@@ -600,9 +600,9 @@ var autotrack = {
             var cacheBuster = '?_ts=' + (new Date()).getTime();
             var siteMedia = instance.get_config('app_host') + '/site_media';
             if (Config.DEBUG) {
-                editorUrl = 'http://datalink.kongming-inc.com/static/js/kmEditor.js' + cacheBuster;
+                editorUrl = 'http://k11.datalink.kongming-inc.com/static/js/kmEditor.js' + cacheBuster;
             } else {
-                editorUrl = 'http://datalink.kongming-inc.com/static/js/kmEditor.js';
+                editorUrl = 'http://k11.datalink.kongming-inc.com/static/js/kmEditor.js';
             }
             this._loadScript(editorUrl, function() {
                 window['kmEditor'].init(editorParams);
