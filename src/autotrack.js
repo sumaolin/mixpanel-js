@@ -600,9 +600,9 @@ var autotrack = {
             var cacheBuster = '?_ts=' + (new Date()).getTime();
             var siteMedia = instance.get_config('app_host') + '/site_media';
             if (Config.DEBUG) {
-                editorUrl = 'http://datalink.kongming-inc.com/static/js/kmEditor.js' + cacheBuster;
+                editorUrl = 'https://datalink.kongming-inc.com/static/js/kmEditor.js' + cacheBuster;
             } else {
-                editorUrl = 'http://datalink.kongming-inc.com/static/js/kmEditor.js';
+                editorUrl = 'https://datalink.kongming-inc.com/static/js/kmEditor.js';
             }
             this._loadScript(editorUrl, function() {
                 window['kmEditor'].init(editorParams);
