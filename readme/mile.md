@@ -4,8 +4,8 @@
 
 ### next
 
-  1. 改写现有的mixpanel.js 把domPath 信息写到每次发送的信息里面 ok
-  2. 开启加载track-editor的参数
+    1. 改写现有的mixpanel.js 把domPath 信息写到每次发送的信息里面 ok
+    2. 开启加载track-editor的参数
 
 ## 2017-06-27
 
@@ -23,7 +23,7 @@
 ### 问题
 1. huggies-2016t3中是移动端的项目，所以事件类型 中使用了 touchend click 同时绑定的写法，但是该事件不触发, 只能单独使用click
 > *next*: 添加touch 事件监听的支持
-*done*: (autotrack.js line 110) 通过添加判断 touchend 添加默认监听事件
+> *done*: (autotrack.js line 110) 通过添加判断 touchend 添加默认监听事件
 
 
 ## 2017-06-28
@@ -85,7 +85,7 @@ js get请求因为URL长度的限制不能超过2k, 所以recieveData.php?data= 
 bug: _.truncate(data, 255)中造成的 dom_path 被截取，后端无法匹配的问题
 
 1. truncate 是深度迭代对象中的每一个attr 值都会进行截取
-2. $web_event->$event_type=pageview  是获取埋点信息触发的 晚于 mp_page_view  所以去掉$event_type=pageview 不进行重复的Pv 统计
+2. `$web_event`->`$event_type=pageview`  是获取埋点信息触发的 晚于 mp_page_view  所以去掉$event_type=pageview 不进行重复的Pv 统计
 3. 'mp_lib': 'web', 信息去掉
 4. $elements 中的信息去掉classes 数组，通过attr__class 查看相关信息
 5. 4 撤销了，改为不记录 _noTrackAttr不需要记录的属性值数组中添加 class 属性，进而不记录 attr__class
@@ -105,14 +105,14 @@ bug: _.truncate(data, 255)中造成的 dom_path 被截取，后端无法匹配�
 
 #### 新问题 onbeforeunload 的track 请求被取消了
 
-#### 解决办法只对a 跳转有效，对于form 的 form_after_track_handler 会出现bug，（场景：表单中发送验证码的按钮，不会提交整个表单，form_after_track_handler的处理就直接提交了整个表单是bug )，暂时不对form 进行处理了
+解决办法只对a 跳转有效，对于form 的 form_after_track_handler 会出现bug，（场景：表单中发送验证码的按钮，不会提交整个表单，form_after_track_handler的处理就直接提交了整个表单是bug )，暂时不对form 进行处理了
 
 
 ## 2017-10-17
 
 ### 问题
 
-#### 页面埋点的按钮数据我自己测试是tracked 而上海那边测试就是没track, 一直搞不清原因：今天会议的时候远程视频看上海那边测试操作了一会，发现再优惠券领取页面点击的区域是不同的，我点击的是文案区域（左半部分大部分区域），对方点击的是领取区域（右半部分一小部分），让同事点击相同的区域发现数据track了，所以问题的症结在于：交互区域的右半部分没有触发touchend事件
+页面埋点的按钮数据我自己测试是tracked 而上海那边测试就是没track, 一直搞不清原因：今天会议的时候远程视频看上海那边测试操作了一会，发现再优惠券领取页面点击的区域是不同的，我点击的是文案区域（左半部分大部分区域），对方点击的是领取区域（右半部分一小部分），让同事点击相同的区域发现数据track了，所以问题的症结在于：交互区域的右半部分没有触发touchend事件
 
 ### 解决办法
 
@@ -133,3 +133,8 @@ _.safeWrap 来实现class 内置函数的执行，对于有error的统一进行�
 #### 解决数据时有时无的情况
 
 去掉了 selectListAlias.php 接口，开启了autotrack模式，把页面所有的click, touchend, submit， change 交互的数据收集，最后通过dom_path 在elemental中进行数据筛选
+
+
+
+## 2107.12.12
+
