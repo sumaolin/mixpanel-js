@@ -93,6 +93,8 @@ var MIXPANEL_LIB_URL = '//datalink.kongming-inc.com/mixpanel.min.js';
             script.src = MIXPANEL_CUSTOM_LIB_URL;
         } else if (document.location.protocol === 'file:' && MIXPANEL_LIB_URL.match(/^\/\//)) { // 本地文件转换成https
             script.src = 'https:' + MIXPANEL_LIB_URL;
+        } else if(document.location.protocol === 'https'){
+            script.src = 'https:' + MIXPANEL_LIB_URL;
         } else {
             script.src = MIXPANEL_LIB_URL;
         }
